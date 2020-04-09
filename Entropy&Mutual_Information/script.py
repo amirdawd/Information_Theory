@@ -1,6 +1,4 @@
 import numpy as np
-import pandas as pd
-import math 
 
 
 class InfoTheory:
@@ -21,9 +19,9 @@ class InfoTheory:
             for x in P:
                 entropi = 0.0
                 if x != 0: 
-                    entropi = self.binary_entropy(x)
+                    entropi = self.binary_entropy(x[0])
                 else:
-                    entropi = -1 * x
+                    entropi = -1 * x[0]
                 entropiList.append(entropi)
             return entropiList
         if P.shape == (3,4):
@@ -33,7 +31,14 @@ class InfoTheory:
         # Derive the mutual information I(X;Y)
         # Input P: P(X,Y)
         # Output: I(X;Y)
-        return 0
+        p_x = np.array([np.sum(P, axis=1)])
+        p_y = np.array([np.sum(P, axis=0)])
+        # I (X;Y) = H(X) + H(Y) - H(X,Y)
+        h_x = self.prob_dist_entropy(p_x)
+        h_y = self.prob_dist_entropy(p_y)
+        h_x_y = np.sum(self.prob_dist_entropy(P))
+        mutual_info = np.sum(h_x[0] + h_y[0] - h_x_y)
+        return mutual_info
         
     def binary_entropy(self, value):
         if value ==1: 
@@ -45,7 +50,10 @@ class InfoTheory:
         entropi = 0.0
         if len(values.shape) == 1:
             for x in values:
-                entropi += -1 * (x * np.log2(x))
+                if x != 0:
+                    entropi += -1 * (x * np.log2(x))
+                else: 
+                    entropi += -1 * x
             return entropi
         else: 
             entropiList = []
@@ -83,4 +91,5 @@ if __name__ == "__main__":
     I4 = IT.MutualInformation(P4)
     print("I4 =",I4)
    
+    
  
