@@ -15,6 +15,16 @@ class InfoTheory:
         # Output:
         # array with entropies
         entropiList = []
+        if P.shape == (1,1):
+            entropi = 0.0
+            for x in P:
+                if x != 0:
+                    entropi = self.binary_entropy(x)
+                else:
+                    entropi = -1 * x[0]
+                entropiList.append(entropi)
+            return entropiList
+        
         if P.shape == (5,1):
             for x in P:
                 entropi = 0.0
@@ -25,6 +35,8 @@ class InfoTheory:
                 entropiList.append(entropi)
             return entropiList
         if P.shape == (3,4):
+            return self.prob_dist_entropy(P)
+        else: 
             return self.prob_dist_entropy(P)
 
     def MutualInformation(self, P):
@@ -37,7 +49,7 @@ class InfoTheory:
         h_x = self.prob_dist_entropy(p_x)
         h_y = self.prob_dist_entropy(p_y)
         h_x_y = np.sum(self.prob_dist_entropy(P))
-        mutual_info = np.sum(h_x[0] + h_y[0] - h_x_y)
+        mutual_info = np.array([np.sum(h_x[0] + h_y[0] - h_x_y)])
         return mutual_info
         
     def binary_entropy(self, value):
