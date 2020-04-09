@@ -53,8 +53,8 @@ class InfoTheory:
         return mutual_info
         
     def binary_entropy(self, value):
-        if value ==1: 
-            return 0 
+        if value ==1:
+            return -1 * 0.0
         else:
             return (-1* (value * np.log2(value))) -((1-value)*np.log2(1-value))
     
@@ -102,6 +102,7 @@ if __name__ == "__main__":
     [1/4, 0, 1/6]])
     I4 = IT.MutualInformation(P4)
     print("I4 =",I4)
+
    
     
  
